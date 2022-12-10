@@ -1,0 +1,162 @@
+{%extends 'base.html'%}
+   {%block content%}
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" /> 
+   {%include 'static/profile_css.html'%}
+
+<div style="width:90% ;margin:auto">
+
+    <nav aria-label="breadcrumb" style="background-color: white;">
+        <ol class="breadcrumb pb-3 bg-white">
+          <li class="breadcrumb-item"><a href="{%url 'home'%}" class="fw-bold">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {%if request.user == profile.user%}
+            My account
+            {%else%}
+            @{{user.username}}'s Profile
+            {%endif%}
+          </li>
+        </ol>
+    </nav>
+
+
+<div class="container ">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-12 bg-white p-0 px-3 py-3 mb-3">
+                    <div class="d-flex flex-column align-items-center">
+                        <img class="photo"
+                            src="{{profile.image.url}}"
+                            alt="">
+                        <p class="mt-3" style="font-size: 1.2rem;"><span class="badge text-bg-success">@{{user.username}}</span></p>
+                        <!--<p class="text-muted">{{profile.dob|upper}}</p>-->
+                        <p class="text-muted mt-2 mb-3 p-1 shadow-lg card">{{profile.bio|capfirst}}</p>
+                        <div class="d-flex gap-5 ">
+                            {%if request.user == profile.user%}
+                            <a href="{%url 'edit' profile.pk%}"><div class="btn btn-primary follow me-2">Edit Profile</div></a>
+                            {%else%}
+                            {%if following%}
+                        <form method="POST"  action="{%url 'unfollow' profile.pk %}">
+                            {%csrf_token%}
+                            <button class="btn btn-outline-danger" type="submit">UnFriend</button>
+                        </form>
+                        {%if profile.allow_chats_private %}
+                        <a href="{%url 'create' profile.user.username%}"><button class="btn btn-outline-primary d-flex gap-2"><i class="bi bi-chat-left-dots"></i>Chat</button></a>{%else%}
+                        {%endif%}
+                            {%else%}
+                        <form method="POST" action="{%url 'follow' profile.pk%}">
+                            {%csrf_token%}
+                            <button class="btn btn-outline-primary message" type="submit">Add Friend</button>
+                            
+                        </form>
+                            {%endif%}
+                            {%endif%}
+                        </div>
+                        
+                        <div class="mt-5" id="followers">
+                            {%if follows%}
+                            <h6 class="fw-bold text-muted">FOLLOWERS</h6>
+                            {%for follow in follows%}
+                                
+                            <div class="card mb-3 shadow position-relative" style="width:18rem; ">
+                                <div class="card-body d-flex align-items-center justify-content-between fw-bold">
+                                    <img src="{{follow.profile.image.url}}" alt="" class="float-start" style="width: 60px;height:60px"> {%if follow == request.user %}You{%else%}@{{follow}}{%endif%} <a href="{%url 'profile' follow.profile.pk%}" class="stretched-link"></a>
+                                </div>
+                            </div>
+                            {%endfor%}
+                            {%else%}
+                            <h6 class="text-muted fw-bold">No followers</h6>
+                            {%endif%}
+                                
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-12 bg-white p-0 px-2 pb-3 mb-3">
+                    
+                </div>-->
+            </div>
+        </div>
+        <div class="col-md-7 ps-md-4">
+            <div class="row">
+                <div class="col-12 bg-white px-3 mb-3 pb-3">
+                    {%if request.user == profile.user %}
+                    <div class="text-center">
+                        <a href="{%url 'inbox'%}">
+                        <button type="button" class="btn  px-2 pb-0 pt-0 position-relative shadow float-end">
+                            <i class="bi bi-chat-dots fw-bold" style="font-size: 2.5rem;"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                              {{threads.all.count}}
+                              <span class="visually-hidden">unread messages</span>
+                            </span>
+                          </button></a>
+                    </div>
+                    {%endif%}
+
+                    <div class="text-start">
+                        <button type="button" onclick="show()" class="btn  px-2 pb-0 pt-0 position-relative shadow">
+                            <i class="bi bi-people-fill text-info fw-bold" style="font-size: 2.5rem;"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+                              {{followers}}
+                              <span class="visually-hidden"></span>
+                            </span>
+                          </button>
+                    </div>
+                    
+
+                    <div class="d-flex align-items-center justify-content-between border-bottom">
+                        <p class="py-2">Full Name</p>
+                        <p class="py-2 text-muted">
+                            {%if profile.last_name and profile.first_name%}
+                            {{profile.first_name|capfirst}} {{profile.last_name|capfirst}}
+                            {%else%}
+                            ___ ___
+                            {%endif%}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-bottom">
+                        <p class="py-2">Email</p>
+                        <p class="py-2 text-muted">
+                            {%if profile.hide_email%}
+                            **********
+                            {%else%}
+                            {{user.email}}
+                            {%endif%}
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-bottom">
+                        <p class="py-2">Date of Birth</p>
+                        <p class="py-2 text-muted">{%if profile.dob%}{{profile.dob}}{%else%}_____{%endif%}</p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between border-bottom">
+                        <p class="py-2">Gender</p>
+                        <p class="py-2 text-muted">{{profile.gender}}</p>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <p class="py-2">Country</p>
+                        <p class="py-2 text-muted">{%if profile.country%}{{profile.country|capfirst}}{%else%}____{%endif%}</p>
+                    </div>
+                    {%if request.user == profile.user%}
+                    <div class="d-flex align-items-center justify-content-between">
+                        <a href="{%url 'account_change_password'%}"><p class="py-2 link-danger">Change Password</p></a>
+                        <a href="{%url 'account_email'%}"><p class="py-2 link-danger">Change E-mail</p></a>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script>
+    const followers=document.getElementById('followers');
+    followers.style.display='none'
+    function show(){
+        if (followers.style.display==='none'){
+            followers.style.display='block'
+        }else{
+            followers.style.display='none'
+        }
+    }
+</script>
+   {%endblock%}

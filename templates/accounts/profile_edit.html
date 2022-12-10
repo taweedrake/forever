@@ -1,0 +1,38 @@
+{%extends 'base.html'%}
+{% load crispy_forms_tags %}
+{%block content%}
+{%include 'static/profile_css.html'%}
+<style>
+    label{
+        margin-top: 20px;
+    }
+    input[type=checkbox]{
+        margin-top: 20px;
+    }
+    .my-div{
+        width: 50%;
+        margin: auto;
+        padding-bottom: 2rem;
+    }
+    @media (max-width:700px){
+        .my-div{
+            width: 90%;
+            margin: auto;
+        }
+    }
+</style>
+<nav aria-label="breadcrumb" style="background-color: white;">
+    <ol class="breadcrumb p-3 bg-white ">
+      <li class="breadcrumb-item"><a href="{%url 'home'%}" class="fw-bolder">Home</a></li>
+      <li class="breadcrumb-item"><a href="{%url 'profile' request.user.pk%}" class="fw-bold text-muted">My Account</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+    </ol>
+</nav>
+<div class="my-div">
+<form method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary text-center mt-3">Update</button>
+</form>
+</div>
+{%endblock%}

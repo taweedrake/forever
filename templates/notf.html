@@ -1,0 +1,76 @@
+<button class="btn btn-outline-primary fw-bold shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+    <i class="bi bi-bell-fill"></i> <span class="badge bg-danger">{{notifications.all.count}}</span>
+</button>
+
+    
+  
+  <div class="offcanvas offcanvas-start bg-light" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title fw-bold" id="staticBackdropLabel"><i class="bi bi-info-circle-fill"></i> Notifications</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div>
+        {%if notifications%}
+        {%for notification in notifications%}
+        {%if notification.notification_type == 3 %}
+        <div class="card shadow position-relative mb-3">
+        <div class="card-body d-flex gap-3 align-items-center">
+            
+        <a href="{%url 'follownot' notification.pk notification.from_user.profile.pk%}" class="stretched-link"><img src="{{notification.from_user.profile.image.url}}" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:3px solid goldenrod;margin-right:10px;float:left ">
+        </a>
+        <span class="fw-bold">@{{notification.from_user}} 
+            
+            followed you <i class="bi bi-person-fill-add text-success" style="font-size:1.3rem ;"></i>
+            
+        </span> 
+        
+        </div>
+        <span class="badge rounded-pill bg-light text-info">{{notification.date|timesince}} ago</span>
+        </div>
+        {%elif notification.notification_type == 4 %}
+
+        <div class="card shadow position-relative mb-3">
+          <div class="card-body d-flex gap-3 align-items-center">
+              
+          <a href="{%url 'follownot' notification.pk notification.from_user.profile.pk%}" class="stretched-link"><img src="{{notification.from_user.profile.image.url}}" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:3px solid goldenrod;margin-right:10px;float:left ">
+          </a>
+          <span class="fw-bold">@{{notification.from_user}} 
+              
+              unfollowed you <i class="bi bi-person-fill-dash text-danger" style="font-size:1.3rem ;"></i>
+              
+          </span> 
+          
+          </div>
+          <span class="badge rounded-pill bg-light text-info">{{notification.date|timesince}} ago</span>
+          </div>
+
+            {%endif%}
+
+
+
+        {%if notification.thread%}
+
+        <div class="card shadow position-relative mb-3">
+          <div class="card-body d-flex gap-3 align-items-center">
+              
+          <a href="{%url 'dmnot' notification.pk notification.thread.pk%}" class="stretched-link"><img src="{{notification.from_user.profile.image.url}}" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:3px solid goldenrod;margin-right:10px;float:left ">
+          </a>
+          <span class="fw-bold">@{{notification.from_user}} 
+              Sent you a message 
+          </span> 
+          
+          </div>
+          <span class="badge rounded-pill bg-light text-info">{{notification.date|timesince}} ago</span>
+          </div>
+        {%endif%}
+        {%endfor%}
+        {%else%}
+        <h3 class="text-center fw-bold">No new notifications</h3>
+        {%endif%}
+        
+
+      </div>
+    </div>
+  </div>
+  

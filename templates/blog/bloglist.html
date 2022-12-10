@@ -1,0 +1,79 @@
+{%extends 'blog/base.html'%}
+{%block content%}
+<style>
+    .card{
+        width: 70%;
+    }
+    @media (max-width:750px){
+        .card{
+            width: 98%;
+        }
+    }
+</style>
+{%for post in object_list%}
+{%if post.image%}
+
+<div class="card mb-5 mx-auto shadow">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{post.image.url}}" class=" rounded-start" height="200px" width="90%" style="object-fit: cover;" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body position-relative">
+        <h5 class="card-title fw-bold">{{post.title|upper}}</h5>
+        <p class="card-text"><small style="font-size: .75rem;font-weight:bold;">BY</small> <span class="badge text-bg-light fst-italic text-info">{{post.author}}</span></p>
+        <p class="card-text"><small class="text-muted float-end">
+            {%if post.category == 'Education' %}
+        <span class="badge text-bg-info">{{post.category}}</span>
+        {%elif post.category == 'Sports' %}
+        <span class="badge text-bg-warning">{{post.category}}</span>
+        {%elif post.category == 'Uncategorized' %}
+        <span class="badge text-bg-secondary">{{post.category}}</span>
+        {%elif post.category == 'Lifestyle' %}
+        <span class="badge text-bg-primary">{{post.category}}</span>
+
+        {%endif%} <br>
+        <small style="font-size: .75rem;"><span class="badge rounded-pill text-bg-dark">{{post.date|timesince}} ago</span></small>
+        </small></p>
+       <a href="{%url 'post' post.pk post.title%}" class="btn btn-primary stretched-link">Read Post</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%else%}
+
+
+<div class="card mx-auto mb-5 shadow">
+  <div class="card-header fw-bold">
+    {{post.title|upper}}
+  </div>
+  <div class="card-body position-relative">
+    <h6 class="card-title text-decoration-none"><small style="font-size: .75rem;font-weight:bold;">BY</small>
+    <span class="badge text-bg-light fst-italic text-info ">{{post.author}}</span>
+    </h6><br>
+    <p class="card-text float-end">
+        {%if post.category == 'Education' %}
+        <span class="badge text-bg-info">{{post.category}}</span>
+        {%elif post.category == 'Sports' %}
+        <span class="badge text-bg-warning">{{post.category}}</span>
+        {%elif post.category == 'Uncategorized' %}
+        <span class="badge text-bg-secondary">{{post.category}}</span>
+       {%elif post.category == 'Lifestyle' %}
+        <span class="badge text-bg-primary">{{post.category}}</span>
+       {%endif%} <br>
+       <small style="font-size: .75rem;"><span class="badge rounded-pill text-bg-dark">{{post.date|timesince}} ago</span></small>
+        
+    </p>
+    <a href="{%url 'post' post.pk post.title%}" class="btn btn-primary stretched-link">Read Post</a>
+  </div>
+</div>
+
+
+{%endif%}
+
+
+{%endfor%}
+
+
+{%endblock%}

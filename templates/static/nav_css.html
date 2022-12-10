@@ -1,0 +1,104 @@
+<style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'Quicksand', sans-serif;
+}
+nav{
+    padding: .5rem;
+    background: rgb(38, 48, 82);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: .5rem;
+}
+.fa-bell{
+    color: blue;
+    font-size: 2.3rem;
+    width: 100%;
+}
+.avater{
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid lightblue;
+}
+.img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.user{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.not{
+    padding:2px 1rem ;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+.icon{
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    padding: .3rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+}
+.baadge{
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background: green;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px;
+}
+.h2{
+    font-size: 1.3rem;
+    color: white;
+}
+.a{
+    text-decoration: none;
+    color: rgb(5, 117, 192);
+    font-style: italic;
+    font-weight: 700;
+}
+.a:hover{
+    text-decoration: underline;
+}
+#search-bar{
+    width: 90%;
+    margin: auto;
+    padding: .2rem;
+}
+@media (min-width:800px){
+    #search-bar{
+        width: 50%;
+        margin: auto;
+    }
+}
+
+</style>

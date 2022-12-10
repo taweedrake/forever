@@ -1,0 +1,168 @@
+{%extends 'base.html'%}
+{%block content%}
+{%load crispy_forms_tags%}
+<style type="text/css">
+    .gradient-custom {
+        min-height: 100vh;
+    }
+        
+    .chat{
+        width: 70%;
+        margin: auto;
+        padding: 1rem;
+    }
+    @media (max-width:799px){
+        .chat{
+            width: 100%;
+        }
+    }
+    .msg{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+</style>
+
+<nav aria-label="breadcrumb" style="background-color: white;">
+    <ol class="breadcrumb p-3 bg-white ">
+      <li class="breadcrumb-item"><a href="{%url 'home'%}" class="fw-bolder">Home</a></li>
+      <li class="breadcrumb-item"><a href="{%url 'inbox'%}" class="fw-bold text-muted">Chat Box</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Inbox</li>
+    </ol>
+</nav>
+
+
+
+
+<section class="gradient-custom">
+    <div class="container py-5">
+  
+      <div class="row">
+  
+        <div class="col-md-6 col-lg-5 col-xl-5 mb-4 mb-md-0">
+  
+          <h5 class="font-weight-bold mb-3 text-center text-warning fw-bold">Users Involved</h5>
+  
+          <div class="card mask-custom shadow" style="background-color: darkcyan;">
+            <div class="card-body">
+  
+              <ul class="list-unstyled mb-0">
+                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                  <a href="{%url 'profile' thread.user.pk%}" class="d-flex justify-content-between link-light">
+                    <div class="d-flex flex-row">
+                        <img src="{{thread.user.profile.image.url}}"  alt="avatar"
+                        class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" height="60" style="object-fit:cover ;">
+                        <div class="pt-1">
+                        <p class="fw-bold mb-0">{%if thread.user == request.user%}You{%else%}{{thread.user}}{%endif%}</p>
+                        <!--<p class="small text-white">Hello, Are you there?</p>-->
+                      </div>
+                    </div>
+                    <!--<div class="pt-1">
+                      <p class="small text-white mb-1">Just now</p>
+                      <span class="badge bg-danger float-end">1</span>
+                    </div>-->
+                  </a>
+                </li>
+                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                    <a href="{%url 'profile' thread.receiver.pk%}" class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                          <img src="{{thread.receiver.profile.image.url}}"  alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" height="60" style="object-fit: cover;">
+                          <div class="pt-1">
+                          <p class="fw-bold mb-0">{%if thread.receiver == request.user%}You{%else%}{{thread.receiver}}{%endif%}</p>
+                          <!--<p class="small text-white">Hello, Are you there?</p>-->
+                        </div>
+                      </div>
+                      <!--<div class="pt-1">
+                        <p class="small text-white mb-1">Just now</p>
+                        <span class="badge bg-danger float-end">1</span>
+                      </div>-->
+                    </a>
+                  </li>
+                  
+              </ul>
+  
+            </div>
+          </div>
+  
+        </div>
+  
+        <div class="col-md-6 col-lg-7 col-xl-7">
+  
+          <ul class="list-unstyled text-white">
+            {%if message%}
+            {%for m in message%}
+            {%if m.sender_user == request.user%}
+
+            <li class="d-flex justify-content-between mb-4">
+              <img src="{{m.sender_user.profile.image.url}}" alt="avatar"
+                class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60" height="60" style="object-fit: cover;">
+              <div class="card mask-custom w-100 bg-info shadow">
+                <div class="card-header d-flex justify-content-between p-3"
+                  style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                  <p class="fw-bold mb-0">{%if m.sender_user == request.user%}You{%else%}{{m.sender_user}}{%endif%}</p>
+                  <p class="text-success small mb-0 fw-bold"><i class="far fa-clock"></i> {{m.date|timesince}} ago</p>
+                </div>
+                <div class="card-body">
+                    {%if m.image%}
+                    <img src="{{m.image.url}}" width="150px" height="150px" style="object-fit: cover;" class="rounded" alt="">
+                    {%endif%}
+                  <p class="mb-0">
+                    {{m.body}}
+                  </p>
+                </div>
+              </div>
+            </li>
+            {%else%}
+            <li class="d-flex justify-content-between mb-4">
+              <div class="card mask-custom w-100 text-dark shadow">
+                <div class="card-header d-flex justify-content-between p-3"
+                  style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                  <p class="fw-bold mb-0">{%if m.sender_user == request.user%}You{%else%}{{m.sender_user}}{%endif%}</p>
+                  <p class="text-warning small mb-0 fw-bold"><i class="far fa-clock"></i> {{m.date|timesince}} ago</p>
+                </div>
+                <div class="card-body">
+                    {%if m.image%}
+                    <img src="{{m.image.url}}" width="150px" height="150px" style="object-fit:cover ;" class="rounded" alt="">
+                    {%endif%}
+                  <p class="mb-0">
+                    {{m.body}}
+                  </p>
+                </div>
+              </div>
+              <img src="{{m.sender_user.profile.image.url}}" alt="avatar"
+                class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60" height="60" style="object-fit: cover;">
+            </li>
+            {%endif%}
+            {%endfor%}
+            {%else%}
+            <h1 class="text-center text-dark m-5">No messages</h1>
+            {%endif%}
+            <li class="mb-3">
+              <div class="form-outline form-white">
+                <form action="{%url 'text' thread.pk%}" method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {{form|crispy}}
+                    <label class="form-label" for="textAreaExample3">Message</label>
+                    <button type="submit" class="btn btn-primary float-end mt-2">Send</button>
+                </form>
+                
+              </div>
+            </li>
+          </ul>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  </section>
+  
+
+
+
+
+
+
+{%endblock%}

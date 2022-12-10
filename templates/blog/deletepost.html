@@ -1,0 +1,17 @@
+{%extends 'base.html'%}
+{%block content%}
+<nav aria-label="breadcrumb" style="background-color: white;">
+    <ol class="breadcrumb p-2 bg-white ">
+      <li class="breadcrumb-item"><a href="{%url 'home'%}" class="fw-bolder">Home</a></li>
+      <li class="breadcrumb-item"><a href="{%url 'blog'%}" class="fw-bolder">Blog Posts</a></li>
+      <li class="breadcrumb-item"><a href="{%url 'predelete' request.user.pk%}" class="fw-bold text-muted">Post Manager</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Delete Post</li>
+    </ol>
+</nav>
+<form method="post" class="text-center p-2">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object|upper }}"?</p>
+    {{ form }}
+    <input type="submit" class="btn btn-danger" value="Confirm">
+</form>
+
+{%endblock%}

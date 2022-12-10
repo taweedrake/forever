@@ -1,0 +1,74 @@
+{%extends 'base.html'%}
+{%block content%}
+<style type="text/css">
+    .chat{
+        width: 70%;
+        margin: auto;
+        padding: 1rem;
+    }
+    @media (max-width:799px){
+        .chat{
+            width: 100%;
+        }
+    }
+</style>
+
+
+<nav aria-label="breadcrumb" style="background-color: white;">
+    <ol class="breadcrumb p-3 bg-white">
+      <li class="breadcrumb-item"><a href="{%url 'home'%}" class="fw-bold">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        My Chat Box
+      </li>
+    </ol>
+</nav>
+
+
+
+
+<div class="chat text-center">
+    <div class="card shadow mb-5 text-bg-primary">
+        <div class="card-body fw-bold">
+          CHAT BOX
+        </div>
+    </div>
+   <div class="text-start">
+        {%if threads%}
+            <h4>Recent chats</h4>
+            {%for thread in threads.all%}
+            <div class="card position-relative shadow mb-5" style="width: 18rem;">
+                <div class="card-body">
+                    {%if thread.user == request.user%}<img src="{{thread.receiver.profile.image.url}}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:3px solid goldenrod;margin-right:10px ">{%else%}<img src="{{thread.user.profile.image.url}}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:3px solid goldenrod;margin-right:10px ">{%endif%}
+                    <span class="fw-bold">You and {%if thread.user == request.user%}@{{thread.receiver}}{%else%}@{{thread.user}}{%endif%}</span>
+                    
+                    <a href="{%url 'thread' thread.pk%}" class="stretched-link"></a>
+                </div>
+            </div>    
+            {%endfor%}
+        {%else%}
+        <h4 class="text-center">You have no recent messages</h4>
+        {%endif%}
+   </div>
+   <div d-grid gap-2>
+<form action="{%url 'create-thread'%}" method="get">
+    {%csrf_token%}
+    <button class="btn btn-outline-success fw-bold mt-5" type="submit">Start New Conversation</button>
+</form>
+   </div>
+</div>
+
+
+
+
+
+
+
+<!--
+your conversations
+
+
+{%for thread in threads.all%}
+{{thread.user}}
+<a href="{%url 'thread' thread.pk%}">Start chat</a>
+{%endfor%}-->
+{%endblock%}

@@ -1,0 +1,61 @@
+{%extends 'base.html'%}
+{%block content%}
+<style>
+	.list-display{
+		display: flex;
+		gap: 2rem;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+	}
+	.list-display >*{
+		width: 100%;
+	}
+	.avater{
+		height: 50px;
+		width: 50px;
+		overflow: hidden;
+		border-radius: 50%;
+		border: 2px solid lightblue;
+	}
+	.img{
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.search{
+		width: 300px;
+		margin: auto;
+	}
+</style>
+<nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);background:white;margin:0" aria-label="breadcrumb">
+    <ol class="breadcrumb px-2 pt-2 ">
+      <li class="breadcrumb-item " style="font-weight: bold;"><a href="{%url 'home'%}">Home</a></li>
+      {%if is_self%}
+      <li class="breadcrumb-item active" aria-current="page">My Profile</li>
+      {%else%}
+      <li class="breadcrumb-item active" aria-current="page">results for '{{request.GET.q}}'</li>
+      {%endif%}
+    </ol>
+</nav>
+{%if accounts%}
+{%for account in accounts %}
+
+<div class="search">
+<div class="card my-5 shadow-lg">
+  <div class="card-body position-relative">
+    <img src="{{account.user.profile.image.url}}" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:3px solid goldenrod;margin-right:10px "><a href="{%url 'profile' account.user.pk%}" class="stretched-link text-decoration-none fw-bold">{{account.user}}</a>
+    <small class="float-end">{%if account.user == request.user %}<span class="badge text-bg-warning">This is you</span>{%else%}{%endif%}</small><span class="badge rounded-pill text-bg-info">Profile</span>
+  </div>
+</div>
+</div>
+{%endfor%}
+{%else%}
+<h4 class="text-center">No accounts found</h4>
+{%endif%}
+
+
+
+
+{%endblock%}

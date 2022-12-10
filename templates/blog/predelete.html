@@ -1,0 +1,72 @@
+{%extends 'default/base.html'%}
+{%block content%}
+<style>
+    .body{
+        width: 50%;
+        margin: auto;
+    }
+    .flex-div{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    .flex-div >*{
+        width: 100%;
+    }
+    @media (max-width:700px){
+        .body{
+            width: 98%;
+        }
+    }
+</style>
+<h4 class="pt-3"><small class="pt-5">DELETE POSTS</small></h4>
+      <hr>
+      {%if object_list%}
+<div class="body">
+    {%for blog in object_list%}
+<div class="flex-div">
+    {%if blog.image%}
+
+    <div class="card mb-3 mb-5 shadow" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{blog.image.url}}" style="object-fit: cover;" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body d-grid gap-2">
+        <h5 class="card-title fw-bold">{{blog.title|upper}}</h5>
+        <p class="card-text">{{blog.body|urlize|linebreaks|capfirst}}</p>
+        <p class="card-text"><small>created on <span class="badge text-bg-primary">{{blog.date}}</span></small></p>
+        <button class="btn btn-danger"><a href="{%url 'delete' blog.pk%}" class="text-white">DELETE</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    {%else%}
+
+        <div class="card border-primary mb-5 shadow">
+            <div class="card-header fw-bold">{{blog.title|upper}}</div>
+            <div class="card-body text-primary d-grid gap-2">
+            <p class="card-text"><small>created on <span class="badge text-bg-primary">{{blog.date}}</span></small></p>
+            <p class="card-text">{{blog.body|urlize|linebreaks|capfirst}}</p>
+            <button class="btn btn-danger"><a href="{%url 'delete' blog.pk%}" class="text-white">DELETE</a></button>
+        </div>
+        
+</div>
+
+
+    {%endif%}
+</div>
+    {%endfor%}
+   
+
+</div>
+{%else%}
+<h5 class="text-center">You have no Posts</h5>
+{%endif%}
+ {%endblock%}
+
+
+
+
